@@ -5,10 +5,7 @@ const dbConfig = {
   host: process.env.DB_HOST || '192.168.0.93',
   user: process.env.DB_USER || 'it.jitdhana',
   password: process.env.DB_PASSWORD || 'iT12345$',
-  database: process.env.DB_NAME || 'esp_tracker',
-  ssl: {
-    rejectUnauthorized: false
-  }
+  database: process.env.DB_NAME || 'esp_tracker'
 };
 
 function formatStandardMinutes(start: string, end: string) {

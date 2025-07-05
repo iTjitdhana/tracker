@@ -160,7 +160,7 @@ git pull origin main
 ## 🔍 Troubleshooting
 
 ### ถ้า Container ไม่ Start
-```bash
+   ```bash
 # ดู logs เพื่อหาสาเหตุ
 docker-compose logs tracker
 ```
@@ -172,7 +172,7 @@ docker-compose logs tracker
 - Database มีอยู่
 
 ### ถ้า Git Pull Error
-```bash
+   ```bash
 # ดู Git status
 git status
 

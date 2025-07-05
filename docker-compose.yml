@@ -12,10 +12,7 @@ services:
       - DB_PASSWORD=iT$123456
       - DB_NAME=esp_tracker
     restart: unless-stopped
-    extra_hosts:
-      - "mysql-server:192.168.0.93"
-    networks:
-      - tracker-network
+    network_mode: host
 
 networks:
   tracker-network:

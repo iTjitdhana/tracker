@@ -1,8 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false, // ปิดเพื่อลดการ reload
   swcMinify: true,
   output: 'standalone',
+  // ปิด Fast Refresh เพื่อแก้ปัญหา reload ตลอด
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      }
+    }
+    return config
+  },
   images: {
     remotePatterns: [
       {

@@ -1,23 +1,23 @@
-# 🐳 Docker Deployment Guide
+# 🐳 Docker Deployment Guide (with Git)
 
 ## Prerequisites
 - Docker และ Docker Compose ติดตั้งบน server แล้ว
+- Git ติดตั้งบน server แล้ว
 - Database MySQL/MariaDB ทำงานที่ `192.168.0.93`
+- Git repository สร้างแล้ว (GitHub/GitLab)
 
-## 📋 ขั้นตอนการ Deploy
+## 📋 ขั้นตอนการ Deploy ครั้งแรก
 
-### 1. Copy โปรเจคไปยัง Server
+### 1. Clone Repository บน Server
 ```bash
-# Copy โฟลเดอร์ tracker ไปยัง server
-# ตัวอย่าง: C:\tracker
-```
+# Clone repository ไปยัง server
+git clone https://github.com/iTjitdhana/tracker.git C:\tracker
 
-### 2. เข้าไปในโฟลเดอร์โปรเจค
-```bash
+# เข้าไปในโฟลเดอร์
 cd C:\tracker
 ```
 
-### 3. รันคำสั่ง Deploy
+### 2. รันคำสั่ง Deploy
 **สำหรับ Windows:**
 ```bash
 deploy.bat
@@ -29,16 +29,33 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
-**หรือใช้คำสั่ง Docker Compose โดยตรง:**
+## 🔄 ขั้นตอนการ Update
+
+### เมื่อมีการแก้ไขโค้ด:
+1. **บนเครื่อง Development:**
+   ```bash
+   git add .
+   git commit -m "Update description"
+   git push origin main
+   ```
+
+2. **บน Server:**
+   ```bash
+   # เข้าไปในโฟลเดอร์
+   cd C:\tracker
+   
+   # รันคำสั่ง update
+   update.bat
+   ```
+
+**หรือใช้คำสั่ง Git โดยตรง:**
 ```bash
-# Stop containers เดิม
+# Pull latest changes
+git pull origin main
+
+# Rebuild และ restart
 docker-compose down
-
-# Build image ใหม่
-docker-compose build --no-cache
-
-# Start containers
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 ## 🔧 คำสั่งที่มีประโยชน์
@@ -54,10 +71,22 @@ docker-compose ps
 docker-compose logs
 
 # ดู logs แบบ real-time
-docker-compose logs -f
+docker-compose logs -f tracker
 
 # ดู logs ของ service เฉพาะ
 docker-compose logs tracker
+```
+
+### Git Commands
+```bash
+# ดูสถานะ Git
+git status
+
+# ดู commit history
+git log --oneline
+
+# ดู branch
+git branch
 ```
 
 ### Stop/Start Services
@@ -72,11 +101,6 @@ docker-compose start
 docker-compose restart
 ```
 
-### Update Application
-เมื่อมีการแก้ไขโค้ด:
-1. Copy โปรเจคใหม่ไปยัง server
-2. รัน `deploy.bat` หรือ `./deploy.sh` อีกครั้ง
-
 ## 🌐 การเข้าถึง
 - **Dashboard:** http://localhost:3000
 - **Logs Page:** http://localhost:3000/logs  
@@ -88,6 +112,17 @@ docker-compose restart
 ```bash
 # ดู logs เพื่อหาสาเหตุ
 docker-compose logs tracker
+```
+
+### ถ้า Git Pull Error
+```bash
+# ดู Git status
+git status
+
+# ถ้ามี conflicts
+git stash
+git pull origin main
+git stash pop
 ```
 
 ### ถ้า Database Connection Error
@@ -106,4 +141,17 @@ docker-compose exec tracker sh
 - `DB_HOST`: Database server IP
 - `DB_USER`: Database username  
 - `DB_PASSWORD`: Database password
-- `DB_NAME`: Database name 
+- `DB_NAME`: Database name
+
+## 🚀 Workflow แนะนำ
+
+### Development Workflow:
+1. แก้ไขโค้ดบนเครื่อง local
+2. ทดสอบด้วย `npm run dev`
+3. Commit และ push ไปยัง Git
+4. รัน `update.bat` บน server
+
+### Production Workflow:
+1. Server จะ auto-restart เมื่อ reboot
+2. ใช้ `update.bat` เพื่อ update โปรแกรม
+3. Monitor logs ด้วย `docker-compose logs -f tracker` 

@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: false, // ปิดเพื่อลดการ reload
   swcMinify: true,
-  output: 'standalone',
   // ปิด Fast Refresh เพื่อแก้ปัญหา reload ตลอด
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {

@@ -202,7 +202,7 @@ export default function ProductionDashboard() {
               {data.map((item, idx) => {
                 // เวลาเริ่มจริง (ถ้ามี log start) ไม่งั้นใช้ start_time
                 const startTimeDisplay = item.actual_start_time
-                  ? new Date(item.actual_start_time).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+                  ? item.actual_start_time.slice(11, 16)
                   : item.startTime;
                 // เวลาผลิตจริง (production_minutes)
                 const prodMinutes = item.production_minutes;

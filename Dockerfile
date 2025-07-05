@@ -1,6 +1,12 @@
 # Use the official Node.js runtime as the base image
 FROM node:18-alpine AS base
 
+# Set timezone to Asia/Bangkok
+ENV TZ=Asia/Bangkok
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/Asia/Bangkok /etc/localtime && \
+    echo "Asia/Bangkok" > /etc/timezone
+
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.

@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: 'Date parameter is required' })
       }
 
-      const connection = await mysql.createConnection(dbConfig)
+      const connection = await mysql.createConnection({ ...dbConfig, dateStrings: true })
       
       // ดึงข้อมูล logs ตามวันที่
       const [rows] = await connection.execute(

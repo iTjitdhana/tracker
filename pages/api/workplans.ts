@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: 'ข้อมูลไม่ครบถ้วน' });
     }
     try {
-      const connection = await mysql.createConnection(dbConfig);
+      const connection = await mysql.createConnection({ ...dbConfig, dateStrings: true });
       let workPlanId = id;
       if (req.method === 'POST') {
         // insert work_plan
@@ -68,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const connection = await mysql.createConnection(dbConfig);
+    const connection = await mysql.createConnection({ ...dbConfig, dateStrings: true });
     const { date } = req.query;
     let workPlansQuery = '';
     let workPlansParams: any[] = [];
